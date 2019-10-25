@@ -13,3 +13,11 @@
         name: openshift-applier/roles/openshift-applier
       tags:
         - openshift-applier
+
+- name: Create Builds and Deployments
+  hosts: apps
+  tasks:
+    - include_role:
+        name: openshift-applier/roles/openshift-applier
+      tags:
+        - openshift-applier
