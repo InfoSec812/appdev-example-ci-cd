@@ -8,7 +8,7 @@ application_repository_ref: 'test-vue-vertx-client'
 application_name: 'vue-vertx-chat'
 sa_name: 'jenkins'
 sa_namespace: "{{ ci_cd_namespace }}"
-application_readiness_response: '{ "status": "OK" }'
+application_readiness_response: '.*OK.*'
 application_readiness_path: '/health'
 
 openshift_cluster_content:
