@@ -4,7 +4,7 @@ ansible_connection: local
 repository_url: 'https://github.com/redhat-cop/container-pipelines.git'
 repository_ref: 'master'
 application_repository_url: 'https://github.com/InfoSec812/vue-chat-vertx.git'
-application_repository_ref: 'test-vue-vertx-client'
+application_repository_ref: 'master'
 application_name: 'vue-vertx-chat'
 sa_name: 'jenkins'
 sa_namespace: "{{ ci_cd_namespace }}"
