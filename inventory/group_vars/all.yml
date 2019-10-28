@@ -1,6 +1,6 @@
-ci_cd_namespace: labs-ci-cd
-dev_namespace: labs-dev
-test_namespace: labs-test
+ci_cd_namespace: deven-test-ci-cd
+dev_namespace: deven-test-dev
+test_namespace: deven-test-test
 
 openshift_templates_raw: "https://raw.githubusercontent.com/redhat-cop/openshift-templates"
 openshift_templates_raw_version_tag: "v1.4.12"
@@ -22,8 +22,8 @@ test:
   NAMESPACE_DISPLAY_NAME: "{{ test_namespace }}"
 
 edit_role_binding_group:
-  GROUP: "labs-ci-cd-contributors"
+  GROUP: "rhc-na-appdev-coe"
   ROLE: "{{ role | default('edit') }}"
 admin_role_binding_group:
-  GROUP: "ocp-devs"
+  GROUP: "rhc-na-appdev-coe-admins"
   ROLE: "admin"
