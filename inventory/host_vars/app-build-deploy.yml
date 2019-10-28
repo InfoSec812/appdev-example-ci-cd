@@ -1,0 +1,56 @@
+---
+ansible_connection: local
+
+repository_url: 'https://github.com/redhat-cop/container-pipelines.git'
+repository_ref: 'master'
+application_repository_url: 'https://github.com/InfoSec812/vue-chat-vertx.git'
+application_repository_ref: 'test-vue-vertx-client'
+application_name: 'vue-vertx-chat'
+sa_name: 'jenkins'
+sa_namespace: "{{ ci_cd_namespace }}"
+application_readiness_response: '{ "status": "OK" }'
+application_readiness_path: '/health'
+
+openshift_cluster_content:
+- object: builds
+  content:
+  - name: "deploy build pipeline to dev"
+    template: "https://raw.githubusercontent.com/redhat-cop/container-pipelines/master/basic-spring-boot/.openshift/templates/build.yml"
+    params_from_vars:
+      APPLICATION_NAME: "{{ application_name }}"
+      NAMESPACE: "{{ ci_cd_namespace }}"
+      SOURCE_REPOSITORY_URL: "{{ application_repository_url }}"
+      SOURCE_REPOSITORY_REF: "{{ application_repository_ref }}"
+      APPLICATION_SOURCE_REPO: "{{ application_repository_url }}"
+      APPLICATION_SOURCE_REF: "{{ application_repository_ref }}"
+      PIPELINE_SCRIPT: "Jenkinsfile"
+      CONTEXT_DIR: '.'
+    tags:
+      - vue-vertx-chat
+      - build
+- object: deployments
+  content:
+  - name: "deploy dev environment"
+    template: "https://raw.githubusercontent.com/redhat-cop/container-pipelines/master/basic-spring-boot/.openshift/templates/deployment.yml"
+    params_from_vars:
+      APPLICATION_NAME: "{{ application_name }}"
+      NAMESPACE: "{{ test_namespace }}"
+      SA_NAME: "{{ sa_name }}"
+      SA_NAMESPACE: "{{ sa_namespace }}"
+      READINESS_RESPONSE: "{{ application_readiness_response }}"
+      READINESS_PATH: "{{ application_readiness_path }}"
+    tags:
+      - vue-vertx-chat
+      - deployment
+  - name: "deply test environment"
+    template: "https://raw.githubusercontent.com/redhat-cop/container-pipelines/master/basic-spring-boot/.openshift/templates/deployment.yml"
+    params_from_vars:
+      APPLICATION_NAME: "{{ application_name }}"
+      NAMESPACE: "{{ dev_namespace }}"
+      SA_NAME: "{{ sa_name }}"
+      SA_NAMESPACE: "{{ sa_namespace }}"
+      READINESS_RESPONSE: "{{application_readiness_response }}"
+      READINESS_PATH: "{{ application_readiness_path }}"
+    tags:
+      - vue-vertx-chat
+      - deployment
